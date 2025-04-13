@@ -1,5 +1,7 @@
 package gui.game;
 
+import utils.Settings;
+
 import javax.swing.*;
 import java.text.DecimalFormat;
 import java.time.LocalDateTime;
@@ -27,10 +29,12 @@ public class TimerPanel extends JPanel {
     ActionListener updateClock = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            int timeDeltaSeconds = (int) ChronoUnit.SECONDS.between(startTime, LocalDateTime.now());
-            int minutes = timeDeltaSeconds / 60;
-            int seconds = timeDeltaSeconds % 60;
-            clockLabel.setText(decimalFormat.format(minutes) + ":" + decimalFormat.format(seconds));
+            if (Settings.isGameActive()) {
+                int timeDeltaSeconds = (int) ChronoUnit.SECONDS.between(startTime, LocalDateTime.now());
+                int minutes = timeDeltaSeconds / 60;
+                int seconds = timeDeltaSeconds % 60;
+                clockLabel.setText(decimalFormat.format(minutes) + ":" + decimalFormat.format(seconds));
+            }
         }
     };
 }

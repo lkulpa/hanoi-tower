@@ -5,18 +5,22 @@ import utils.Settings;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.time.LocalDateTime;
 
 import static utils.Settings.getGameSize;
 import static utils.Settings.getNumberOfDisks;
 
 public class GameBrain {
 
-    Tower startingTower;
-    Tower middleTower;
     Tower goalTower;
+    Tower middleTower;
+    Tower startingTower;
     ArrayList<Tower> towers = new ArrayList<>();
 
     public GameBrain() {
+        Settings.setGameStartTime(LocalDateTime.now());
+        Settings.setIsGameActive(true);
+
         int gameWidth = getGameSize().width;
         int gameHeight = getGameSize().height;
 
@@ -30,7 +34,12 @@ public class GameBrain {
     }
 
     public boolean isLastTowerFull() {
-        return goalTower.getDisks().size() == getNumberOfDisks();
+        if (goalTower.getDisks().size() == getNumberOfDisks()) {
+            Settings.setIsGameActive(false);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public ArrayList<Tower> getTowers() {

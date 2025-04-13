@@ -7,18 +7,19 @@ import gameBrain.GameBrain;
 
 import java.awt.*;
 import javax.swing.*;
+import java.awt.event.*;
 import java.util.Objects;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseMotionAdapter;
 
 public class GamePanel extends JPanel {
 
-    GameBrain gameBrain;
     Tower giverTower;
     Disk selectedDisk;
+    GameBrain gameBrain;
     Point mousePointWhenPressed;
     Point selectedDiskCornerBeforeDrag;
+
+    DragListener dragListener;
+    ClickListener clickListener;
 
     public GamePanel() {
         gameBrain = new GameBrain();
@@ -26,8 +27,8 @@ public class GamePanel extends JPanel {
 
         this.setPreferredSize(Settings.getGameSize());
 
-        ClickListener clickListener = new ClickListener();
-        DragListener dragListener = new DragListener();
+        this.clickListener = new ClickListener();
+        this.dragListener = new DragListener();
         this.addMouseListener(clickListener);
         this.addMouseMotionListener(dragListener);
     }
@@ -102,6 +103,8 @@ public class GamePanel extends JPanel {
             }
             if (gameBrain.isLastTowerFull()) {
                 System.out.println("WINNER!!!");
+                GamePanel.this.removeMouseListener(clickListener);
+                GamePanel.this.removeMouseMotionListener(dragListener);
             }
             repaint();
             selectedDisk = null;
